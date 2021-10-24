@@ -6,7 +6,7 @@
 #    By: rcarmen <rcarmen@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/03 15:00:17 by rcarmen           #+#    #+#              #
-#    Updated: 2021/10/21 23:17:17 by rcarmen          ###   ########.fr        #
+#    Updated: 2021/10/23 22:43:59 by rcarmen          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ SRC_PATH = $(addprefix $(SRC_DIR), $(SRC))
 OBJ_PATH = $(addprefix $(OBJ_DIR), $(OBJ))
 
 CC = clang
-CFLAGS = -Wall -Wextra -Werror -pthread
+CFLAGS = -Wall -Wextra -Werror -pthread -g
 OPT_FLUGS = -pipe
 
 HMM_COLOR   = \033[1;95m

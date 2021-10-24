@@ -6,7 +6,7 @@
 /*   By: rcarmen <rcarmen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 21:16:29 by rcarmen           #+#    #+#             */
-/*   Updated: 2021/10/21 00:11:15 by rcarmen          ###   ########.fr       */
+/*   Updated: 2021/10/24 13:24:56 by rcarmen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,16 @@ void	put_down_the_forks(t_philo *p)
 	pthread_mutex_unlock(p->right_fork);
 }
 
-void	destroy(t_philo *p)
+void	destroy(t_args **args, t_philo **p)
 {
 	int	j;
 
 	j = 0;
-	while (j < p->args->num_of_philo)
+	while (j < (*p)->args->num_of_philo)
 	{
-		pthread_mutex_destroy(&p[j].left_fork);
+		pthread_mutex_destroy(&(*p)[j].left_fork);
 		j++;
 	}
-	free(p);
+	free((*args));
+	free((*p));
 }

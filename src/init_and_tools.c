@@ -6,17 +6,19 @@
 /*   By: rcarmen <rcarmen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 14:27:18 by rcarmen           #+#    #+#             */
-/*   Updated: 2021/10/21 14:09:33 by rcarmen          ###   ########.fr       */
+/*   Updated: 2021/10/24 13:10:06 by rcarmen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
 
-int	error(int type, char *s)
+int	error(int type, char *s, t_philo **philo, t_args **args)
 {
 	if (type == 0)
 	{
 		write(2, s, ft_strlen(s));
+		free(*args);
+		free(*philo);
 		return (1);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: rcarmen <rcarmen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 19:09:59 by rcarmen           #+#    #+#             */
-/*   Updated: 2021/10/21 23:21:09 by rcarmen          ###   ########.fr       */
+/*   Updated: 2021/10/24 13:28:11 by rcarmen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,28 +28,28 @@
 ** philosopher has died of hunger
 **
 */
-void	monitor(t_philo *p, int i)
+void	monitor(t_philo **p, int i, t_args **args)
 {
 	while (1)
 	{
 		i = 0;
-		while (i < p->args->num_of_philo)
+		while (i < (*p)->args->num_of_philo)
 		{
-			if (p->args->full_philo == p->args->num_of_philo)
+			if ((*p)->args->full_philo == (*p)->args->num_of_philo)
 			{
-				pthread_mutex_lock(&p->args->message);
-				printf("%llu\tall full\n", get_time() - p->args->start_time);
-				destroy(p);
+				pthread_mutex_lock(&(*p)->args->message);
+				printf("%llu\tall full\n", get_time() - (*p)->args->start_time);
+				destroy(args, p);
 				return ;
 			}
 			ft_usleep(1);
-			if (get_time() - p[i].start_eating >= \
-				(unsigned long long)p->args->time_to_die)
+			if (get_time() - (*p)[i].start_eating >= \
+				(unsigned long long)(*p)->args->time_to_die)
 			{
-				pthread_mutex_lock(&p->args->message);
+				pthread_mutex_lock(&(*p)->args->message);
 				printf("%llu\t%i\tis died\n", get_time() - \
-						p->args->start_time, i + 1);
-				destroy(p);
+						(*p)->args->start_time, i + 1);
+				destroy(args, p);
 				return ;
 			}
 			i++;
@@ -71,6 +71,8 @@ void	*life(void *philo)
 	t_philo	*p;
 
 	p = (t_philo *)philo;
+	if (p->id % 2 == 1)
+		ft_usleep(p->args->time_to_eat / 2);
 	while (p->num_of_lunch != p->args->nbr_each_eat)
 	{
 		p->num_of_lunch++;
@@ -147,6 +149,16 @@ int	is_valid(int ac, char **av)
 	return (0);
 }
 
+/*
+**
+**	./philo 1 800 200 200
+**  ./philo 5 800 200 200
+**  ./philo 5 800 200 200 7
+**  ./philo 4 410 200 200
+**  ./philo 4 310 200 100
+**
+*/
+
 int	main(int ac, char **av)
 {
 	t_philo	*philo;
@@ -154,21 +166,17 @@ int	main(int ac, char **av)
 	int		i;
 
 	args = malloc(sizeof(t_args));
+	philo = NULL;
+	if (NULL == args)
+		return (1);
 	if (is_valid(ac, av) || parse(ac, av, args) || init_philo(&philo, args))
-		return (error(0, "Invalid argument or syscall error.\n"));
+		return (error(0, "Invalid argument or syscall error.\n", &philo, &args));
 	i = 0;
 	while (i < args->num_of_philo)
 	{
 		pthread_create(&philo[i].thread, NULL, &life, &philo[i]);
 		pthread_detach(philo[i].thread);
-		i += 2;
+		i++;
 	}
-	i = 1;
-	while (i < args->num_of_philo)
-	{
-		pthread_create(&philo[i].thread, NULL, &life, &philo[i]);
-		pthread_detach(philo[i].thread);
-		i += 2;
-	}
-	monitor(philo, 0);
+	monitor(&philo, 0, &args);
 }

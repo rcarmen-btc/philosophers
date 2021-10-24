@@ -6,7 +6,7 @@
 /*   By: rcarmen <rcarmen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/12 11:30:04 by rcarmen           #+#    #+#             */
-/*   Updated: 2021/10/21 23:18:53 by rcarmen          ###   ########.fr       */
+/*   Updated: 2021/10/24 13:23:59 by rcarmen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,17 +44,17 @@ typedef struct s_philo
 	int					num_of_lunch;
 }						t_philo;
 
+int		error(int type, char *s, t_philo **philo, t_args **args);
 void	init_first_philo(t_philo **philo, t_args *args);
+void	monitor(t_philo **p, int i, t_args **args);
 int		init_philo(t_philo **philo, t_args *args);
 int		parse(int ac, char **av, t_args *args);
+void	destroy(t_args **args, t_philo **p);
 void	ft_usleep(long int time_in_ms);
 void	put_down_the_forks(t_philo *p);
 int		is_valid(int ac, char **av);
-void	monitor(t_philo *p, int i);
-int		error(int type, char *s);
 void	msg(char *s, t_philo *p);
 void	take_forks(t_philo *p);
-void	destroy(t_philo *p);
 void	*life(void *philo);
 int		ft_strlen(char *s);
 int		ft_isspace(char c);
